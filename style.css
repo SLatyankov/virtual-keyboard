@@ -1,0 +1,79 @@
+body {
+    width: 1000px;
+    margin: auto;
+}
+
+#textarea {
+    padding: 25px;
+    width: 950px;
+    height: 300px;
+    margin-top: 100px;
+    font-size: 18px;
+    border: 3px solid rgb(92, 78, 78);
+    border-radius: 16px;
+    background-color: rgb(243, 243, 235);
+}
+
+#keyboard {
+    border: 2px solid rgb(92, 78, 78);
+    margin: 100px 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgb(221, 221, 187);
+    padding: 15px;
+}
+
+.keys {
+    margin: 2px;
+    border: 2px solid rgb(92, 78, 78);
+    border-radius: 10%;
+    width: 56px;
+    height: 52px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 26px;
+    background-color: rgb(253, 253, 249);
+}
+
+.active {
+    margin: 6px;
+    border: 2px solid rgb(92, 78, 78);
+    width: 52px;
+    height: 48px;
+    text-align: center;
+    line-height: 46px;
+    background-color: rgb(216, 216, 200);
+}
+
+#Tab {
+    width: 75px;
+}
+
+#Delete,
+#CapsLock {
+    width: 101px;
+}
+
+#Enter {
+    width: 139px;
+}
+
+#ShiftLeft,
+#ShiftRight {
+    width: 120px;
+}
+
+#ControlLeft,
+#ControlRight,
+#AltLeft,
+#AltRight {
+    width: 110px;
+}
+
+#Space {
+    width: 287px;
+}
+
+#manual {
+    font-size: 36px;
+}
