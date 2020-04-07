@@ -1,3 +1,11 @@
+let lang;
+console.log(localStorage.getItem('en') != null);
+if (localStorage.getItem('en') != null) {
+    lang = 'en';
+} else {
+    lang = 'ru';
+}
+
 /* Задал массив будущих кнопок. Сверни, чтобы не прокручивать */
 
 const BATTON = [{
@@ -461,16 +469,9 @@ MANUAL.id = 'manual';
 MANUAL.innerHTML = 'Для смены языка нажми Ctrl + Alt. <br> Клавиатура писалась на windows';
 document.body.append(MANUAL);
 
-
-//Сохранение языка.  ---------------------------------------------------Доделать!!!!!!!
-/*localStorage.setItem(fontRuEn, 'ru');
-let font = localStorage.getItem(fontRuEn);*/
-
-//шрифт на клавиатуре
-let lang = 'ru';
-let caps = false;
-
+let KEYS = [];
 //Функция для создания и пересоздания клавиатуры
+let caps = false;
 
 function CreateBattons(array) {
     document.querySelectorAll('.keys').forEach(el => el.remove());
@@ -492,6 +493,7 @@ function CreateBattons(array) {
             }
         }
         KEYBOARD.append(key);
+        KEYS = document.querySelectorAll('.keys');
     });
 }
 
@@ -499,7 +501,7 @@ CreateBattons(BATTON);
 
 //Подсветка клавиш + особое поведение
 
-const KEYS = document.querySelectorAll('.keys');
+
 let ControlDown = false;
 
 document.addEventListener('keydown', function (event) {
@@ -511,13 +513,20 @@ document.addEventListener('keydown', function (event) {
         }
     });
     if (event.code == 'CapsLock' || event.code == 'ShiftLeft' || event.code == 'ShiftRight') {
-
         if (caps == false) {
             caps = true;
         } else {
             caps = false;
         }
         CreateBattons(BATTON);
+        KEYS = document.querySelectorAll('.keys');
+        KEYS.forEach(el => {
+
+            if (el.id == event.code) {
+                el.classList.add('active');
+            }
+
+        });
     }
     if (event.code == 'ControlLeft' || event.code == 'ControlRight') {
         ControlDown = true;
@@ -527,11 +536,14 @@ document.addEventListener('keydown', function (event) {
 
         if (lang == 'ru') {
             lang = 'en';
+            localStorage.setItem(lang, 'en');
         } else {
             lang = 'ru';
+            localStorage.removeItem('en');
         }
 
         CreateBattons(BATTON);
+        KEYS = document.querySelectorAll('.keys');
     }
 
 
@@ -552,6 +564,12 @@ document.addEventListener('keyup', function (event) {
             caps = false;
         }
         CreateBattons(BATTON);
+        KEYS = document.querySelectorAll('.keys');
+        KEYS.forEach(el => {
+            if (el.id == event.code) {
+                el.classList.remove('active');
+            }
+        });
     }
 
     if (event.code == 'ControlLeft' || event.code == 'ControlRight') {
@@ -567,14 +585,21 @@ KEYBOARD.addEventListener('mousedown', function (event) {
             el.classList.add('active');
             if (el.id == 'Tab') {
                 TEXTAREA.value += '\t';
-            } else if (el.id == 'CapsLock' || el.id == 'ShiftLeft' || el.id == 'ShiftRight' || el.id == 'ControlLeft' || el.id == 'ControlRight' || el.id == 'AltLeft' || el.id == 'AltRight') {
-            } else if(el.id == 'Enter') {
-                    TEXTAREA.value += '\n';
-                } else if (el.id == 'Delete') {
-                   TEXTAREA.value = string.slice(0, TEXTAREA.selectionStart + 1) + string.slice(TEXTAREA.selectionStart + 2, string.length);
-                } else if (el.id == 'Backspace') {
-                    TEXTAREA.value = string.slice(0, TEXTAREA.selectionStart - 1) + string.slice(TEXTAREA.selectionStart, string.length);
+            } else if (el.id == 'CapsLock' || el.id == 'ShiftLeft' || el.id == 'ShiftRight') {
+                if (caps == false) {
+                    caps = true;
                 } else {
+                    caps = false;
+                }
+                CreateBattons(BATTON);
+                KEYS = document.querySelectorAll('.keys');
+            } else if (el.id == 'ControlLeft' || el.id == 'ControlRight' || el.id == 'AltLeft' || el.id == 'AltRight') {} else if (el.id == 'Enter') {
+                TEXTAREA.value += '\n';
+            } else if (el.id == 'Delete') {
+                TEXTAREA.value = string.slice(0, TEXTAREA.selectionStart + 1) + string.slice(TEXTAREA.selectionStart + 2, string.length);
+            } else if (el.id == 'Backspace') {
+                TEXTAREA.value = string.slice(0, TEXTAREA.selectionStart - 1) + string.slice(TEXTAREA.selectionStart, string.length);
+            } else {
                 TEXTAREA.value += el.textContent;
             }
 
@@ -587,7 +612,18 @@ KEYBOARD.addEventListener('mouseup', function (event) {
     KEYS.forEach(el => {
         if (el == event.target) {
             el.classList.remove('active');
+            if (el.id == 'ShiftLeft' || el.id == 'ShiftRight') {
+                if (caps == false) {
+                    caps = true;
+                } else {
+                    caps = false;
+                }
+                CreateBattons(BATTON);
+                KEYS = document.querySelectorAll('.keys');
+            }
+
         }
+
+
     })
 });
-
