@@ -449,6 +449,7 @@ const TEXTAREA = document.createElement('textarea');
 TEXTAREA.placeholder = "Just press a button. I know, you can";
 TEXTAREA.id = "textarea";
 TEXTAREA.name = "display";
+TEXTAREA.autofocus = true;
 document.body.append(TEXTAREA);
 
 const KEYBOARD = document.createElement('div');
@@ -457,7 +458,7 @@ document.body.append(KEYBOARD);
 
 const MANUAL = document.createElement('p');
 MANUAL.id = 'manual';
-MANUAL.innerHTML = 'Для смены языка нажми левые Shift + Alt.';
+MANUAL.innerHTML = 'Для смены языка нажми Ctrl + Alt. <br> Клавиатура писалась на windows';
 document.body.append(MANUAL);
 
 
@@ -499,10 +500,12 @@ CreateBattons(BATTON);
 //Подсветка клавиш + особое поведение
 
 const KEYS = document.querySelectorAll('.keys');
+let ControlDown = false;
 
 document.addEventListener('keydown', function (event) {
 
     KEYS.forEach(el => {
+        
         if (el.id == event.code) {
             el.classList.add('active');
         }
@@ -514,13 +517,25 @@ document.addEventListener('keydown', function (event) {
         } else {
             caps = false;
         }
-        console.log(caps);
+        CreateBattons(BATTON);
+    }
+    if (event.code == 'ControlLeft' || event.code == 'ControlRight') {
+        ControlDown = true;
+    }
+
+    if (ControlDown == true && event.code == 'AltLeft' || ControlDown == true && event.code == 'AltRight') {
+
+        if (lang == 'ru'){
+            lang = 'en';
+        } else {
+            lang = 'ru';
+        }
 
         CreateBattons(BATTON);
     }
+
+
 })
-
-
 
 document.addEventListener('keyup', function (event) {
 
@@ -530,18 +545,36 @@ document.addEventListener('keyup', function (event) {
         }
     });
 
-        if ( event.code == 'ShiftLeft' || event.code == 'ShiftRight') {
-
-            if (caps == false) {
-                caps = true;
-            } else {
-                caps = false;
-            }
-            console.log(caps);
-
-            CreateBattons(BATTON);
+    if (event.code == 'ShiftLeft' || event.code == 'ShiftRight') {
+        if (caps == false) {
+            caps = true;
+        } else {
+            caps = false;
         }
+        CreateBattons(BATTON);
+    }
+
+    if (event.code == 'ControlLeft' || event.code == 'ControlRight') {
+        ControlDown = false;
+    }
 })
 
 
-/*TEXTAREA.onkeydown = TEXTAREA.onkeyup = TEXTAREA.onkeypress = handle;*/
+KEYBOARD.addEventListener('mousedown', function (event) {
+    KEYS.forEach(el => {
+        if (el == event.target){
+            el.classList.add('active');
+            if (el.special == 'false') {
+
+            }
+        }
+    })
+});
+
+KEYBOARD.addEventListener('mouseup', function (event) {
+    KEYS.forEach(el => {
+        if (el == event.target) {
+            el.classList.remove('active');
+        }
+    })
+});

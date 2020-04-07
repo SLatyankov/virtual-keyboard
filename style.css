@@ -1,3 +1,9 @@
+
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     width: 1000px;
     margin: auto;
@@ -27,16 +33,16 @@ body {
     margin: 2px;
     border: 2px solid rgb(92, 78, 78);
     border-radius: 10%;
-    width: 56px;
-    height: 52px;
+    width: 60px;
+    height: 56px;
     text-align: center;
-    line-height: 50px;
+    line-height: 56px;
     font-size: 26px;
     background-color: rgb(253, 253, 249);
 }
 
 .active {
-    border: 2px solid rgb(92, 78, 78);
+    border: 5px solid rgb(92, 78, 78);
     text-align: center;
     background-color: rgb(216, 216, 200);
     font-size: 28px;
@@ -44,32 +50,32 @@ body {
 }
 
 #Tab {
-    width: 75px;
+    width: 79px;
 }
 
 #Delete,
 #CapsLock {
-    width: 101px;
+    width: 105px;
 }
 
 #Enter {
-    width: 139px;
+    width: 143px;
 }
 
 #ShiftLeft,
 #ShiftRight {
-    width: 120px;
+    width: 124px;
 }
 
 #ControlLeft,
 #ControlRight,
 #AltLeft,
 #AltRight {
-    width: 110px;
+    width: 114px;
 }
 
 #Space {
-    width: 287px;
+    width: 291px;
 }
 
 #manual {
