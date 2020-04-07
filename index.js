@@ -100,10 +100,10 @@ const BATTON = [{
     special: false
 }, {
     codeS: "Backspace",
-    ru: '<-',
-    RU: '<-',
-    en: '<-',
-    EN: '<-',
+    ru: '⬅',
+    RU: '⬅',
+    en: '⬅',
+    EN: '⬅',
     special: true
 }, {
     codeS: "Tab",
@@ -373,10 +373,10 @@ const BATTON = [{
     special: false
 }, {
     codeS: "ArrowUp",
-    ru: '|',
-    RU: '|',
-    en: '|',
-    EN: '|',
+    ru: '↑',
+    RU: '↑',
+    en: '↑',
+    EN: '↑',
     special: true
 }, {
     codeS: "ShiftRight",
@@ -422,24 +422,24 @@ const BATTON = [{
     special: true
 }, {
     codeS: "ArrowLeft",
-    ru: '<--',
-    RU: '<--',
-    en: '<--',
-    EN: '<--',
+    ru: '←',
+    RU: '←',
+    en: '←',
+    EN: '←',
     special: true
 }, {
     codeS: "ArrowDown",
-    ru: '|',
-    RU: '|',
-    en: '|',
-    EN: '|',
+    ru: '↓',
+    RU: '↓',
+    en: '↓',
+    EN: '↓',
     special: true
 }, {
     codeS: "ArrowRight",
-    ru: '-->',
-    RU: '-->',
-    en: '-->',
-    EN: '-->',
+    ru: '→',
+    RU: '→',
+    en: '→',
+    EN: '→',
     special: true
 }]
 
@@ -505,7 +505,7 @@ let ControlDown = false;
 document.addEventListener('keydown', function (event) {
 
     KEYS.forEach(el => {
-        
+
         if (el.id == event.code) {
             el.classList.add('active');
         }
@@ -525,7 +525,7 @@ document.addEventListener('keydown', function (event) {
 
     if (ControlDown == true && event.code == 'AltLeft' || ControlDown == true && event.code == 'AltRight') {
 
-        if (lang == 'ru'){
+        if (lang == 'ru') {
             lang = 'en';
         } else {
             lang = 'ru';
@@ -559,17 +559,29 @@ document.addEventListener('keyup', function (event) {
     }
 })
 
-
+let char = '1';
 KEYBOARD.addEventListener('mousedown', function (event) {
+    let string = TEXTAREA.value;
     KEYS.forEach(el => {
-        if (el == event.target){
+        if (el == event.target) {
             el.classList.add('active');
-            if (el.special == 'false') {
-
+            if (el.id == 'Tab') {
+                TEXTAREA.value += '\t';
+            } else if (el.id == 'CapsLock' || el.id == 'ShiftLeft' || el.id == 'ShiftRight' || el.id == 'ControlLeft' || el.id == 'ControlRight' || el.id == 'AltLeft' || el.id == 'AltRight') {
+            } else if(el.id == 'Enter') {
+                    TEXTAREA.value += '\n';
+                } else if (el.id == 'Delete') {
+                   TEXTAREA.value = string.slice(0, TEXTAREA.selectionStart + 1) + string.slice(TEXTAREA.selectionStart + 2, string.length);
+                } else if (el.id == 'Backspace') {
+                    TEXTAREA.value = string.slice(0, TEXTAREA.selectionStart - 1) + string.slice(TEXTAREA.selectionStart, string.length);
+                } else {
+                TEXTAREA.value += el.textContent;
             }
+
         }
     })
 });
+
 
 KEYBOARD.addEventListener('mouseup', function (event) {
     KEYS.forEach(el => {
@@ -578,3 +590,4 @@ KEYBOARD.addEventListener('mouseup', function (event) {
         }
     })
 });
+
