@@ -36,13 +36,11 @@ body {
 }
 
 .active {
-    margin: 6px;
     border: 2px solid rgb(92, 78, 78);
-    width: 52px;
-    height: 48px;
     text-align: center;
-    line-height: 46px;
     background-color: rgb(216, 216, 200);
+    font-size: 28px;
+    color: brown;
 }
 
 #Tab {

@@ -1,4 +1,4 @@
-/* Сверни, чтобы не прокручивать */
+/* Задал массив будущих кнопок. Сверни, чтобы не прокручивать */
 
 const BATTON = [{
     codeS: 'Backquote',
@@ -443,8 +443,10 @@ const BATTON = [{
     special: true
 }]
 
+//Создание экрана, клавиатуры и описания
+
 const TEXTAREA = document.createElement('textarea');
-TEXTAREA.placeholder = "just press to keys. I know, You can";
+TEXTAREA.placeholder = "Just press a button. I know, you can";
 TEXTAREA.id = "textarea";
 TEXTAREA.name = "display";
 document.body.append(TEXTAREA);
@@ -455,25 +457,91 @@ document.body.append(KEYBOARD);
 
 const MANUAL = document.createElement('p');
 MANUAL.id = 'manual';
-MANUAL.innerHTML = 'Для смены языка нажми Shift + Alt.';
+MANUAL.innerHTML = 'Для смены языка нажми левые Shift + Alt.';
 document.body.append(MANUAL);
 
 
-BATTON.forEach(element => {
-    let key = document.createElement('div');
-    key.className = "keys";
-    key.id = element.codeS;
-    console.log(element.code);
-    key.innerHTML = element.ru;
-    KEYBOARD.append(key);
-});
+//Сохранение языка.  ---------------------------------------------------Доделать!!!!!!!
+/*localStorage.setItem(fontRuEn, 'ru');
+let font = localStorage.getItem(fontRuEn);*/
+
+//шрифт на клавиатуре
+let lang = 'ru';
+let caps = false;
+
+//Функция для создания и пересоздания клавиатуры
+
+function CreateBattons(array) {
+    document.querySelectorAll('.keys').forEach(el => el.remove());
+    array.forEach(element => {
+        let key = document.createElement('div');
+        key.className = "keys";
+        key.id = element.codeS;
+        if (lang == 'ru') {
+            if (caps == false) {
+                key.innerHTML = element.ru;
+            } else {
+                key.innerHTML = element.RU;
+            }
+        } else {
+            if (caps == false) {
+                key.innerHTML = element.en;
+            } else {
+                key.innerHTML = element.EN;
+            }
+        }
+        KEYBOARD.append(key);
+    });
+}
+
+CreateBattons(BATTON);
+
+//Подсветка клавиш + особое поведение
 
 const KEYS = document.querySelectorAll('.keys');
 
-document.onkeypress = function (event) {
-    KEYS.forEach(el => el.classList.remove('active'));
-    let x = event.code;
-    console.log(x);
-    console.log(x.toString());
-    document.getElementById(x).classList.add('active');
-};
+document.addEventListener('keydown', function (event) {
+
+    KEYS.forEach(el => {
+        if (el.id == event.code) {
+            el.classList.add('active');
+        }
+    });
+    if (event.code == 'CapsLock' || event.code == 'ShiftLeft' || event.code == 'ShiftRight') {
+
+        if (caps == false) {
+            caps = true;
+        } else {
+            caps = false;
+        }
+        console.log(caps);
+
+        CreateBattons(BATTON);
+    }
+})
+
+
+
+document.addEventListener('keyup', function (event) {
+
+    KEYS.forEach(el => {
+        if (el.id == event.code) {
+            el.classList.remove('active');
+        }
+    });
+
+        if ( event.code == 'ShiftLeft' || event.code == 'ShiftRight') {
+
+            if (caps == false) {
+                caps = true;
+            } else {
+                caps = false;
+            }
+            console.log(caps);
+
+            CreateBattons(BATTON);
+        }
+})
+
+
+/*TEXTAREA.onkeydown = TEXTAREA.onkeyup = TEXTAREA.onkeypress = handle;*/
