@@ -530,10 +530,12 @@ document.body.append(keyboard);
 
 const manual = document.createElement('p');
 manual.id = 'manual';
+manual.className = 'manual';
 manual.innerHTML = 'Для смены языка нажми Ctrl + Alt. <br> Клавиатура писалась на windows';
 document.body.append(manual);
 let langStorage = 'langStorage';
 let KEYS = [];
+
 //Функция для создания и пересоздания клавиатуры
 let isCapsOn = false;
 let isShiftOn = false;
@@ -543,7 +545,8 @@ function createButtons(array) {
     array.forEach(element => {
 
         let key = document.createElement('div');
-        key.className = "key";
+        key.className = toLoverFirst(element.codeS);
+        key.classList.add("key");        
         key.id = element.codeS;
         if (lang === 'ru') {
             if (isCapsOn === false && isShiftOn === false) {
@@ -705,9 +708,12 @@ keyboard.addEventListener('mouseup', function (event) {
                 createButtons(BUTTON_KEYS);
                 KEYS = document.querySelectorAll('.key');
             }
-
         }
-
-
     })
 });
+
+
+function toLoverFirst(str) {
+    let x =  str.charAt(0).toLowerCase();;
+    return x + str.slice(1);  
+}

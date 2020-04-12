@@ -49,35 +49,35 @@ body {
     color: brown;
 }
 
-#Tab {
+.tab {
     width: 79px;
 }
 
-#Delete,
-#CapsLock {
+.delete,
+.capsLock {
     width: 105px;
 }
 
-#Enter {
+.enter {
     width: 143px;
 }
 
-#ShiftLeft,
-#ShiftRight {
+.shiftLeft,
+.shiftRight {
     width: 124px;
 }
 
-#ControlLeft,
-#ControlRight,
-#AltLeft,
-#AltRight {
+.controlLeft,
+.controlRight,
+.altLeft,
+.altRight {
     width: 114px;
 }
 
-#Space {
+.space {
     width: 291px;
 }
 
-#manual {
+.manual {
     font-size: 36px;
 }
