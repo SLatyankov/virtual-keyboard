@@ -30,6 +30,7 @@ body {
 }
 
 .key {
+    transition: 0.3s linear;
     margin: 2px;
     border: 2px solid rgb(92, 78, 78);
     border-radius: 10%;
@@ -42,6 +43,7 @@ body {
 }
 
 .active {
+    transform: scale(1.1);
     border: 5px solid rgb(92, 78, 78);
     text-align: center;
     background-color: rgb(216, 216, 200);
