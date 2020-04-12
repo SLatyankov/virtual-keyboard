@@ -4,7 +4,7 @@ if (localStorage.getItem('langStorage') === 'en') {
 } else if (localStorage.getItem('langStorage') === 'ru') {
     lang = 'ru';
 } else {
-    lang = 'ru';
+    lang = 'en';
 }
 
 /* Задал массив будущих кнопок. Сверни, чтобы не прокручивать */
@@ -586,12 +586,12 @@ createButtons(BUTTON_KEYS);
 
 //Подсветка клавиш + особое поведение
 
-let keysdown = {};
+let keysDown = {};
 let isControlDown = false;
 
 document.addEventListener('keydown', function (event) {
-    if (!(event.key in keysdown)) {
-        keysdown[event.key] = true;
+    if (!(event.key in keysDown)) {
+        keysDown[event.key] = true;
     }
     event.preventDefault();
     textarea.focus();
@@ -620,20 +620,16 @@ document.addEventListener('keydown', function (event) {
                     }
                 });
             } else if (event.code === 'ControlLeft' || event.code === 'ControlRight') {
-                isControlDown = !isControlDown;
-                console.log(isControlDown);
+                isControlDown = true;
             } else if (el.id === 'AltLeft' || el.id === 'AltRight') {
                 if (isControlDown === true) {
-                    if (lang === 'ru') {
+                    if (lang == 'ru') {
                         lang = 'en';
-                        localStorage.removeItem('ru');
-                        localStorage.setItem(langStorage, 'en');
+                       localStorage.setItem(langStorage, 'en');
                     } else {
                         lang = 'ru';
-                        localStorage.removeItem('en');
-                        localStorage.setItem(langStorage, 'ru');
+                       localStorage.setItem(langStorage, 'ru');
                     }
-
                     createButtons(BUTTON_KEYS);
                     KEYS = document.querySelectorAll('.key');
                 }
@@ -645,21 +641,6 @@ document.addEventListener('keydown', function (event) {
                 textarea.value = string.slice(0, textarea.selectionStart - 1) + string.slice(textarea.selectionStart, string.length);
             } else {
                 textarea.value += el.textContent;
-            }
-            if (isControlDown === true && event.code === 'AltLeft' || isControlDown === true && event.code === 'AltRight') {
-
-                if (lang === 'ru') {
-                    lang = 'en';
-                    localStorage.removeItem('ru');
-                    localStorage.setItem(langStorage, 'en');
-                } else {
-                    lang = 'ru';
-                    localStorage.removeItem('en');
-                    localStorage.setItem(langStorage, 'ru');
-                }
-
-                createButtons(BUTTON_KEYS);
-                KEYS = document.querySelectorAll('.key');
             }
         }
     })
@@ -684,9 +665,9 @@ document.addEventListener('keyup', function (event) {
         });
     }
 
-    /*if (event.code === 'ControlLeft' || event.code === 'ControlRight') {
+    if (event.code === 'ControlLeft' || event.code === 'ControlRight') {
         isControlDown = false;
-    }*/
+    }
 })
 
 keyboard.addEventListener('mousedown', function (event) {
