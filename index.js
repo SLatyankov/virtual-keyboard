@@ -546,7 +546,7 @@ function createButtons(array) {
 
         let key = document.createElement('div');
         key.className = toLoverFirst(element.codeS);
-        key.classList.add("key");        
+        key.classList.add("key");
         key.id = element.codeS;
         if (lang === 'ru') {
             if (isCapsOn === false && isShiftOn === false) {
@@ -586,62 +586,83 @@ createButtons(BUTTON_KEYS);
 
 //Подсветка клавиш + особое поведение
 
-
+let keysdown = {};
 let isControlDown = false;
 
 document.addEventListener('keydown', function (event) {
+    if (!(event.key in keysdown)) {
+        keysdown[event.key] = true;
+    }
+    event.preventDefault();
     textarea.focus();
+    let string = textarea.value;
     KEYS.forEach(el => {
-
         if (el.id === event.code) {
             el.classList.add('active');
-        }
-    });
-    if (event.code === 'CapsLock') {
-        isCapsOn = !isCapsOn;
-        createButtons(BUTTON_KEYS);
-        KEYS = document.querySelectorAll('.key');
-        KEYS.forEach(el => {
+            if (el.id === 'Tab') {
+                textarea.value += '\t';
+            } else if (el.id === 'CapsLock') {
+                isCapsOn = !isCapsOn;
+                createButtons(BUTTON_KEYS);
+                KEYS = document.querySelectorAll('.key');
+                KEYS.forEach(el => {
+                    if (el.id === event.code) {
+                        el.classList.add('active');
+                    }
+                });
+            } else if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+                isShiftOn = true;
+                createButtons(BUTTON_KEYS);
+                KEYS = document.querySelectorAll('.key');
+                KEYS.forEach(el => {
+                    if (el.id === event.code) {
+                        el.classList.add('active');
+                    }
+                });
+            } else if (event.code === 'ControlLeft' || event.code === 'ControlRight') {
+                isControlDown = !isControlDown;
+                console.log(isControlDown);
+            } else if (el.id === 'AltLeft' || el.id === 'AltRight') {
+                if (isControlDown === true) {
+                    if (lang === 'ru') {
+                        lang = 'en';
+                        localStorage.removeItem('ru');
+                        localStorage.setItem(langStorage, 'en');
+                    } else {
+                        lang = 'ru';
+                        localStorage.removeItem('en');
+                        localStorage.setItem(langStorage, 'ru');
+                    }
 
-            if (el.id === event.code) {
-                el.classList.add('active');
+                    createButtons(BUTTON_KEYS);
+                    KEYS = document.querySelectorAll('.key');
+                }
+            } else if (el.id == 'Enter') {
+                textarea.value += '\n';
+            } else if (el.id === 'Delete') {
+                textarea.value = string.slice(0, textarea.selectionStart + 1) + string.slice(textarea.selectionStart + 2, string.length);
+            } else if (el.id === 'Backspace') {
+                textarea.value = string.slice(0, textarea.selectionStart - 1) + string.slice(textarea.selectionStart, string.length);
+            } else {
+                textarea.value += el.textContent;
             }
+            if (isControlDown === true && event.code === 'AltLeft' || isControlDown === true && event.code === 'AltRight') {
 
-        });
-    }
-    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-        isShiftOn = true;
-        createButtons(BUTTON_KEYS);
-        KEYS = document.querySelectorAll('.key');
-        KEYS.forEach(el => {
+                if (lang === 'ru') {
+                    lang = 'en';
+                    localStorage.removeItem('ru');
+                    localStorage.setItem(langStorage, 'en');
+                } else {
+                    lang = 'ru';
+                    localStorage.removeItem('en');
+                    localStorage.setItem(langStorage, 'ru');
+                }
 
-            if (el.id === event.code) {
-                el.classList.add('active');
+                createButtons(BUTTON_KEYS);
+                KEYS = document.querySelectorAll('.key');
             }
-
-        });
-    }
-    if (event.code === 'ControlLeft' || event.code === 'ControlRight') {
-        isControlDown = true;
-    }
-
-    if (isControlDown === true && event.code === 'AltLeft' || isControlDown === true && event.code === 'AltRight') {
-
-        if (lang === 'ru') {
-            lang = 'en';
-            localStorage.removeItem('ru');
-            localStorage.setItem(langStorage, 'en');
-        } else {
-            lang = 'ru';
-            localStorage.removeItem('en');
-            localStorage.setItem(langStorage, 'ru');
         }
-
-        createButtons(BUTTON_KEYS);
-        KEYS = document.querySelectorAll('.key');
-    }
-
-
+    })
 })
 
 document.addEventListener('keyup', function (event) {
@@ -663,9 +684,9 @@ document.addEventListener('keyup', function (event) {
         });
     }
 
-    if (event.code === 'ControlLeft' || event.code === 'ControlRight') {
+    /*if (event.code === 'ControlLeft' || event.code === 'ControlRight') {
         isControlDown = false;
-    }
+    }*/
 })
 
 keyboard.addEventListener('mousedown', function (event) {
@@ -673,18 +694,30 @@ keyboard.addEventListener('mousedown', function (event) {
     KEYS.forEach(el => {
         if (el === event.target) {
             el.classList.add('active');
-
-
             if (el.id === 'Tab') {
                 textarea.value += '\t';
             } else if (el.id === 'CapsLock') {
                 isCapsOn = !isCapsOn;
                 createButtons(BUTTON_KEYS);
                 KEYS = document.querySelectorAll('.key');
+                KEYS.forEach(el => {
+
+                    if (el.id === event.target) {
+                        el.classList.add('active');
+                    }
+
+                });
             } else if (el.id === 'ShiftLeft' || el.id === 'ShiftRight') {
                 isShiftOn = true;
                 createButtons(BUTTON_KEYS);
                 KEYS = document.querySelectorAll('.key');
+                KEYS.forEach(el => {
+
+                    if (el.id === event.target) {
+                        el.classList.add('active');
+                    }
+
+                });
             } else if (el.id === 'ControlLeft' || el.id === 'ControlRight' || el.id === 'AltLeft' || el.id === 'AltRight') {} else if (el.id == 'Enter') {
                 textarea.value += '\n';
             } else if (el.id === 'Delete') {
@@ -694,7 +727,6 @@ keyboard.addEventListener('mousedown', function (event) {
             } else {
                 textarea.value += el.textContent;
             }
-
         }
     })
 });
@@ -714,6 +746,6 @@ keyboard.addEventListener('mouseup', function (event) {
 
 
 function toLoverFirst(str) {
-    let x =  str.charAt(0).toLowerCase();;
-    return x + str.slice(1);  
+    let x = str.charAt(0).toLowerCase();;
+    return x + str.slice(1);
 }
